@@ -13,6 +13,8 @@ model = DQN.load("roundabout-v0/model")
 
 def get_neighboring_observations(env : gym.Env, actions : set) -> List[List[float]]:
   # Get observations
+  # TODO: This is slow and it lags the rendering. Is there a better way to determine the observations
+  # after applying each action to a state?
   return [deepcopy(env).step(action)[0] for action in actions]
 
 def robust_q_masking(q_values, actions):
