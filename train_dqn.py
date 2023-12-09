@@ -3,6 +3,22 @@ import highway_env
 from stable_baselines3 import DQN
 
 env = gym.make("roundabout-v0")
+env.configure({
+    "observation": {
+        "type": "Kinematics",
+        "vehicles_count": 3,
+        "features": ["presence", "x", "y", "vx", "vy"],
+        "features_range": {
+            "x": [-100, 100],
+            "y": [-100, 100],
+            "vx": [-20, 20],
+            "vy": [-20, 20]
+        },
+        "absolute": False,
+        "order": "sorted"
+    }
+})
+env.reset()
 model = DQN('MlpPolicy', env,
               policy_kwargs=dict(net_arch=[256, 256]),
               learning_rate=5e-4,
