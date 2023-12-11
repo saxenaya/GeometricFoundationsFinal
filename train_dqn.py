@@ -6,7 +6,7 @@ env = gym.make("roundabout-v0")
 env.configure({
     "observation": {
         "type": "Kinematics",
-        "vehicles_count": 3,
+        "vehicles_count": 6,
         "features": ["presence", "x", "y", "vx", "vy"],
         "features_range": {
             "x": [-100, 100],
