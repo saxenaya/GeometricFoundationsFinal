@@ -2,3 +2,4 @@ gymnasium
 highway-env
 stable-baselines3
 tensorboard
+imitation

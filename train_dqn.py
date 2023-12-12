@@ -2,7 +2,7 @@ import gymnasium as gym
 import highway_env
 from stable_baselines3 import DQN
 
-env = gym.make("roundabout-v0")
+env = gym.make("custom-roundabout-v0")
 env.configure({
     "observation": {
         "type": "Kinematics",
@@ -15,7 +15,8 @@ env.configure({
             "vy": [-20, 20]
         },
         "absolute": False,
-        "order": "sorted"
+        "order": "sorted",
+        "high_speed_reward": 0.5,
     }
 })
 env.reset()

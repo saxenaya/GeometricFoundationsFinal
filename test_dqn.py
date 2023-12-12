@@ -6,6 +6,8 @@ from typing import List
 from copy import deepcopy
 import math
 
+EVALUATE = True
+
 print("Creating Environment...")
 env = gym.make("roundabout-v0", render_mode="rgb_array")
 env.configure({
@@ -20,7 +22,8 @@ env.configure({
             "vy": [-20, 20]
         },
         "absolute": False,
-        "order": "sorted"
+        "order": "sorted",
+        "high_speed_reward": 0.5
     }
 })
 
@@ -106,15 +109,23 @@ def robust_q_masking(q_values, actions):
 
 print("Starting simulation...")
 actions = set(range(5))
-while True:
+
+NUM_SIMULATIONS = 10
+cum_rewards = []
+for _ in range(NUM_SIMULATIONS):
     done = truncated = False
     obs, info = env.reset()
+    cumulative_reward = 0
     while not (done or truncated):
         # action, _states = model.predict(obs, deterministic=False)
         q_values = model.q_net(torch.from_numpy(obs).unsqueeze(0)).detach().numpy()[0]
 
-        q_values = robust_q_masking(q_values, actions)
+        # q_values = robust_q_masking(q_values, actions)
 
         action = q_values.argmax().reshape(-1)
         obs, reward, done, truncated, info = env.step(action)
-        env.render()
+        cumulative_reward += reward
+        if not EVALUATE:
+            env.render()
+    cum_rewards.append(cumulative_reward)
+print("Average reward:", sum(cum_rewards) / len(cum_rewards))   
